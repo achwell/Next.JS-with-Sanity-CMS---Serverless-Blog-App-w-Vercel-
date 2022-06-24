@@ -33,7 +33,6 @@ export default function Home({blogs}) {
 // It will create static page
 export async function getStaticProps() {
     const blogs = await getAllBlogs()
-    console.log(blogs)
     return {
         props: {
             blogs
