@@ -3,6 +3,7 @@ import {Row, Col} from 'react-bootstrap'
 import {getBlogBySlug, getAllBlogs, urlFor} from 'lib/api'
 import BlogHeader from 'components/BlogHeader';
 import BlogContent from 'components/BlogContent';
+import moment from "moment";
 
 const BlogDetail = ({blog}) => {
     const {author, content, coverImage, date, subtitle, title} = blog;
@@ -17,15 +18,16 @@ const BlogDetail = ({blog}) => {
                     subtitle={subtitle}
                     coverImage={imgUrl}
                     author={author}
-                    date={date}
+                    date={moment(blog.date).format('LLL')}
                 />
                 <hr/>
-                <BlogContent content={content}/>
+                {content && <BlogContent content={content}/>}
             </Col>
         </Row>
     </PageLayout>;
 }
 
+// TODO: Introduce fallback
 export async function getStaticProps({params}) {
     const blog = await getBlogBySlug(params.slug);
     return {

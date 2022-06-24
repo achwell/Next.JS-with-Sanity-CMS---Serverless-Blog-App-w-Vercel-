@@ -1,19 +1,27 @@
-import { useState } from 'react';
-import {Row, Col} from 'react-bootstrap'
+import {useState} from 'react';
+import {Row, Button} from 'react-bootstrap'
 import PageLayout from 'components/PageLayout'
 import AuthorIntro from 'components/AuthorIntro'
-import CardItem from 'components/CardItem'
-import CardListItem from 'components/CardListItem'
 import FilteringMenu from 'components/FilteringMenu';
+import {useGetBlogsPages} from 'actions/pagination';
 import {getAllBlogs} from 'lib/api'
-import { useGetBlogs } from 'actions';
 
-export default function Home({blogs: initialData}) {
+export default function Home({blogs}) {
     const [filter, setFilter] = useState({
-        view: { list: 0 }
+        view: { list: 0 },
+        date: { asc: 0 }
     });
 
-    const { data: blogs, error } = useGetBlogs(initialData);
+    // loadMore: to load more data
+    // isLoadingMore: is true whenever we are making request to fetch data
+    // isReachingEnd: is true when we loaded all of the data, data is empty (empty array)
+
+    const {
+        pages,
+        isLoadingMore,
+        isReachingEnd,
+        loadMore
+    } = useGetBlogsPages({blogs, filter});
 
     return (
         <PageLayout>
@@ -24,19 +32,17 @@ export default function Home({blogs: initialData}) {
             />
             <hr/>
             <Row className="mb-5">
-                { blogs.map(blog => {
-                    let link = {href: '/blogs/[slug]', as: `/blogs/${blog.slug}`};
-                    return filter.view.list ?
-                            <Col md="9" key={`${blog.slug}-list`}>
-                                <CardListItem blog={blog} link={link}/>
-                            </Col>
-                            :
-                            <Col key={blog.slug} md="4">
-                                <CardItem blog={blog} link={link}/>
-                            </Col>;
-                    }
-                )}
+                {pages}
             </Row>
+            <div style={{textAlign: 'center'}}>
+                <Button
+                    onClick={loadMore}
+                    disabled={isReachingEnd || isLoadingMore}
+                    size="lg"
+                    variant="outline-secondary">
+                    {isLoadingMore ? '...' : isReachingEnd ? 'No more blogs' : 'More Blogs'}
+                </Button>
+            </div>
         </PageLayout>
     )
 }
@@ -45,7 +51,7 @@ export default function Home({blogs: initialData}) {
 // Provides props to your page
 // It will create static page
 export async function getStaticProps() {
-    const blogs = await getAllBlogs()
+    const blogs = await getAllBlogs({offset: 0, date: 'desc'});
     return {
         props: {
             blogs

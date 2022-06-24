@@ -37,6 +37,10 @@ html, body {
     padding-bottom: 40px;
   }
 
+  &.no-image {
+    min-height: auto;
+  }
+
   .card-body {
     padding: 15px 0 0;
 

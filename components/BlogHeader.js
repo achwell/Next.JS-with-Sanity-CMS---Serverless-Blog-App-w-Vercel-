@@ -7,7 +7,7 @@ export default function BlogHeader({title, subtitle, coverImage, date, author}) 
                     className="rounded-circle mr-3"
                     height="50px"
                     width="50px"
-                    alt="avatar"/>
+                    alt={author?.name}/>
                 {author?.name}
                 {', '} {date}
             </p>
