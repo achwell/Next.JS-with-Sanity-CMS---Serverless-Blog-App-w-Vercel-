@@ -1,9 +1,8 @@
 import {Card} from 'react-bootstrap';
 import Link from 'next/link';
-import {urlFor} from "../lib/api";
-import moment from "moment";
+import {urlFor} from 'lib/api';
 
-const CardItem = ({author, title, subtitle, coverImage, date, image, link, mode = 'normal'}) => {
+const CardItem = ({author, date, image, link, subtitle, title, mode = 'normal'}) => {
     return (
         <Card className={`fj-card ${mode}`}>
             <div className={`card-body-wrapper ${!image ? 'no-image' : ''}`}>
@@ -25,7 +24,7 @@ const CardItem = ({author, title, subtitle, coverImage, date, image, link, mode 
                                 :
                                 <>
                                     <Card.Title className="font-weight-bold mb-1">{author?.name}</Card.Title>
-                                    <Card.Text className="card-date">{moment(date).format('LLL')}</Card.Text>
+                                    <Card.Text className="card-date">{date}</Card.Text>
                                 </>
                         }
                     </div>

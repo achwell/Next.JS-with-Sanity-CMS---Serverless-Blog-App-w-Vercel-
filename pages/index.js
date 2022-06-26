@@ -1,20 +1,19 @@
 import {useState} from 'react';
-import {Row, Button} from 'react-bootstrap'
-import PageLayout from 'components/PageLayout'
-import AuthorIntro from 'components/AuthorIntro'
-import FilteringMenu from 'components/FilteringMenu';
+import {Row, Button} from 'react-bootstrap';
+
 import {useGetBlogsPages} from 'actions/pagination';
-import {getAllBlogs} from 'lib/api'
+import {getPaginatedBlogs} from 'lib/api';
 
-export default function Home({blogs}) {
+import AuthorIntro from 'components/AuthorIntro';
+import FilteringMenu from 'components/FilteringMenu';
+import PageLayout from 'components/PageLayout';
+import PreviewAlert from 'components/PreviewAlert';
+
+export default function Home({blogs, preview}) {
     const [filter, setFilter] = useState({
-        view: { list: 0 },
-        date: { asc: 0 }
+        view: {list: 0},
+        date: {asc: 0}
     });
-
-    // loadMore: to load more data
-    // isLoadingMore: is true whenever we are making request to fetch data
-    // isReachingEnd: is true when we loaded all of the data, data is empty (empty array)
 
     const {
         pages,
@@ -25,6 +24,7 @@ export default function Home({blogs}) {
 
     return (
         <PageLayout>
+            {preview && <PreviewAlert/>}
             <AuthorIntro/>
             <FilteringMenu
                 filter={filter}
@@ -47,14 +47,11 @@ export default function Home({blogs}) {
     )
 }
 
-// This function is called during the build (build time)
-// Provides props to your page
-// It will create static page
-export async function getStaticProps() {
-    const blogs = await getAllBlogs({offset: 0, date: 'desc'});
+export async function getStaticProps({preview = false}) {
+    const blogs = await getPaginatedBlogs({offset: 0, date: 'desc'});
     return {
         props: {
-            blogs
+            blogs, preview
         }
     }
 }

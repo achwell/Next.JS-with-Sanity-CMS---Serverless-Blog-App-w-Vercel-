@@ -1,3 +1,4 @@
+
 html, body {
   height: 100%;
   font-family: Nunito, sans-serif;
@@ -35,10 +36,10 @@ html, body {
     z-index: 2;
     padding: 20px;
     padding-bottom: 40px;
-  }
 
-  &.no-image {
-    min-height: auto;
+    &.no-image {
+      min-height: auto;
+    }
   }
 
   .card-body {
@@ -61,7 +62,6 @@ html, body {
   .card-header {
     background-color: transparent;
     padding: 0 0 15px;
-
     img {
       --size: 45px;
       background-color: #fff;
@@ -84,8 +84,7 @@ html, body {
     font-weight: bold;
     font-size: 14px;
     letter-spacing: .15rem;
-    padding-top: 1.5rem !important /* @TODO temp !!!*/
-  ;
+    padding-top: 1.5rem !important /* @TODO temp !!!*/;
     padding: .75rem 1.5rem;
     background-color: hsl(210, 5%, 41%);
     border-color: hsl(210, 5%, 36%);
@@ -96,8 +95,7 @@ html, body {
     -webkit-transition: -webkit-transform .2s;
     transition: -webkit-transform .2s;
     transition: transform .2s;
-    transition: transform .2s,
-    -webkit-transform .2s;
+    transition: transform .2s, -webkit-transform .2s;
 
     &:hover {
       background-color: hsl(210, 5%, 51%);
@@ -125,7 +123,6 @@ html, body {
 
 .card.fj-card.placeholder {
   color: transparent;
-
   .image-placeholder {
     height: 200px;
     width: 100%;
@@ -153,11 +150,11 @@ html, body {
       text-transform: uppercase;
       letter-spacing: 1px;
       font-weight: bold;
-    }
 
-    a {
-      color: black;
-      font-weight: 900;
+      a {
+        // color: black;
+        font-weight: 900;
+      }
     }
 
     &-item {
@@ -212,7 +209,6 @@ html, body {
 .bg-transparent.menu-close {
   transition: 1s;
 }
-
 // HEADER ENDS
 
 .card-header {
@@ -264,7 +260,6 @@ html, body {
     .lead {
       font-size: 17px;
     }
-
     &-title {
       font-size: 52px;
     }
@@ -282,7 +277,72 @@ html, body {
   .card.fj-card {
     background-color: #232129;
     transition: color 0s ease-out 0s, background 0.2s ease-out 0s;
+    .card-body-wrapper {
+      background-color: #232129;
+      transition: color 0s ease-out 0s, background 0.2s ease-out 0s;
+    }
 
+    .card-button {
+      background-color: #9b5f5f;
+    }
+  }
+
+  .fj-navbar.fj-nav-base {
+    width: 100%;
+    padding: 20px 0;
+
+    .fj-navbar {
+      &-brand {
+        // color: #ffffff;
+      }
+
+      &-link {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.day-night-toggle.react-toggle {
+  &.react-toggle--checked:hover {
+    &:not(.react-toggle--disabled) .react-toggle-track {
+      background-color: black;
+    }
+  }
+
+  .react-toggle-track {
+    background-color: black;
+    &:hover {
+      background-color: black;
+    }
+
+    &-x, &-check {
+      right: 8px;
+      width: 15px;
+      height: 15px;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+.page-footer {
+  padding: 40px;
+  font-size: 20px;
+  text-align: center;
+
+  a {
+    color: #63696e;
+  }
+}
+
+.dark {
+  .card.fj-card {
+    background-color: #232129;
+    transition: color 0s ease-out 0s, background 0.2s ease-out 0s;
     .card-body-wrapper {
       background-color: #232129;
       transition: color 0s ease-out 0s, background 0.2s ease-out 0s;
@@ -316,9 +376,12 @@ html, body {
     }
   }
 
+  .react-toggle-thumb {
+    border-color: black;
+  }
+
   .react-toggle-track {
     background-color: black;
-
     &:hover {
       background-color: black;
     }
@@ -333,15 +396,5 @@ html, body {
         height: 100%;
       }
     }
-  }
-}
-
-.page-footer {
-  padding: 40px;
-  font-size: 20px;
-  text-align: center;
-
-  a {
-    color: #63696e;
   }
 }

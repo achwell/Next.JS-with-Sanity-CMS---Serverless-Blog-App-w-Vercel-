@@ -16,8 +16,7 @@ const AuthorIntro = () =>
                 <Media.Body>
                     <h5 className="font-weight-bold mb-0">Hello Friends,</h5>
                     <p className="welcome-text">
-                        My name is Filip Jerga and I am an experienced software engineer and freelance
-                        developer.
+                        My name is Filip Jerga and I am an experienced software engineer and freelance developer.
                         and this is my blog page.
                     </p>
                 </Media.Body>
