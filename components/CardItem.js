@@ -2,7 +2,7 @@ import {Card} from 'react-bootstrap';
 import Link from 'next/link';
 import {urlFor} from 'lib/api';
 
-const CardItem = ({author, date, image, link, subtitle, title, mode = 'normal'}) => {
+const CardItem = ({author, date, image, link, subtitle = '', title, mode = 'normal'}) => {
     return (
         <Card className={`fj-card ${mode}`}>
             <div className={`card-body-wrapper ${!image ? 'no-image' : ''}`}>
