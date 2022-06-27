@@ -1,77 +1,25 @@
-import {Col} from 'react-bootstrap';
-import {useSWRPages} from 'swr';
-import moment from 'moment';
-import {useGetBlogs} from 'actions';
-import CardItem from 'components/CardItem';
-import CardItemBlank from 'components/CardItemBlank';
-import CardListItem from 'components/CardListItem';
-import CardListItemBlank from 'components/CardListItemBlank';
+import {useSWRInfinite} from 'swr';
+import {getBlogs} from 'actions';
 
-export const BlogList = ({blogs, filter}) => {
-    return blogs
-        .map(blog =>
-            filter.view.list ?
-                <Col key={`${blog.slug}-list`} md="9">
-                    <CardListItem
-                        author={blog.author}
-                        title={blog.title}
-                        subtitle={blog.subtitle}
-                        date={moment(blog.date).format('LL')}
-                        link={{
-                            href: '/blogs/[slug]',
-                            as: `/blogs/${blog.slug}`
-                        }}
-                    />
-                </Col>
-                :
-                <Col key={blog.slug} lg="4" md="6">
-                    <CardItem
-                        author={blog.author}
-                        title={blog.title}
-                        subtitle={blog.subtitle}
-                        date={moment(blog.date).format('LL')}
-                        image={blog.coverImage}
-                        link={{
-                            href: '/blogs/[slug]',
-                            as: `/blogs/${blog.slug}`
-                        }}
-                    />
-                </Col>
-        )
-}
-
-export const useGetBlogsPages = ({filter, blogs}) => {
-
-    return useSWRPages(
-        'index-page',
-        ({offset, withSWR}) => {
-            const {data: paginatedBlogs, error} = withSWR(useGetBlogs({offset, filter}));
-
-            if (!offset && !paginatedBlogs && !error) {
-                return <BlogList blogs={blogs} filter={filter}/>
+export const useGetBlogsPages = ({filter}) => {
+    const results = useSWRInfinite(
+        (index, previousPageData) => {
+            if (index === 0) {
+                return `/api/blogs?date=${filter.date.asc ? 'asc' : 'desc'}`
             }
-
-            if (!paginatedBlogs) {
-                return Array(3)
-                    .fill(0)
-                    .map((_, i) =>
-                        filter.view.list ?
-                            <Col key={i} md="9">
-                                <CardListItemBlank/>
-                            </Col>
-                            :
-                            <Col key={`${i}-item`} lg="4" md="6">
-                                <CardItemBlank/>
-                            </Col>
-                    )
+            if (!previousPageData.length) {
+                return null
             }
-
-            return <BlogList blogs={paginatedBlogs} filter={filter}/>
+            return `/api/blogs?offset=${index * 6}&date=${filter.date.asc ? 'asc' : 'desc'}`
         },
-        // here you will compute offset that will get passed into previous callback function with 'withSWR'
-        // SWR: data you will get from 'withSWR' function
-        // index: number of current page
-        (SWR, index) => SWR.data && SWR.data.length === 0 ? null : (index + 1) * 6,
-        [filter]
+        getBlogs,
+        {persistSize: true}
     )
+    let hitEnd = false
+    const {data} = results
+
+    if (!!data) {
+        hitEnd = data[data.length - 1].length === 0
+    }
+    return {...results, hitEnd}
 }

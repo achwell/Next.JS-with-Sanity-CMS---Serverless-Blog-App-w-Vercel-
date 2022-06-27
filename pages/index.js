@@ -1,10 +1,13 @@
 import {useState} from 'react';
-import {Row, Button} from 'react-bootstrap';
+import {Button, Col, Row} from 'react-bootstrap';
 
 import {useGetBlogsPages} from 'actions/pagination';
 import {getPaginatedBlogs} from 'lib/api';
 
 import AuthorIntro from 'components/AuthorIntro';
+import BlogList from "../components/BlogList";
+import CardItemBlank from "../components/CardItemBlank";
+import CardListItemBlank from "../components/CardListItemBlank";
 import FilteringMenu from 'components/FilteringMenu';
 import PageLayout from 'components/PageLayout';
 import PreviewAlert from 'components/PreviewAlert';
@@ -16,10 +19,7 @@ export default function Home({blogs, preview}) {
     });
 
     const {
-        pages,
-        isLoadingMore,
-        isReachingEnd,
-        loadMore
+        data, size, setSize, hitEnd, isValidating
     } = useGetBlogsPages({blogs, filter});
 
     return (
@@ -32,15 +32,29 @@ export default function Home({blogs, preview}) {
             />
             <hr/>
             <Row className="mb-5">
-                {pages}
+                <BlogList data={data || [blogs]} filter={filter}/>
+                {isValidating &&
+                    Array(3)
+                        .fill(0)
+                        .map((_, i) =>
+                            filter.view.list ?
+                                <Col key={i} md="9">
+                                    <CardListItemBlank/>
+                                </Col>
+                                :
+                                <Col key={`${i}-item`} lg="4" md="6">
+                                    <CardItemBlank/>
+                                </Col>
+                        )
+                }
             </Row>
             <div style={{textAlign: 'center'}}>
                 <Button
-                    onClick={loadMore}
-                    disabled={isReachingEnd || isLoadingMore}
+                    onClick={() => setSize(size + 1)}
+                    disabled={hitEnd}
                     size="lg"
                     variant="outline-secondary">
-                    {isLoadingMore ? '...' : isReachingEnd ? 'No more blogs' : 'More Blogs'}
+                    Load More
                 </Button>
             </div>
         </PageLayout>
