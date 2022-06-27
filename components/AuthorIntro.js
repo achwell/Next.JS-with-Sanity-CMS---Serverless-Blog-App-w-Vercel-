@@ -1,10 +1,10 @@
-import {Col, Image, Media, Row} from "react-bootstrap";
+import {Col, Image, Row} from "react-bootstrap";
 
 const AuthorIntro = () =>
     <Row>
         <Col md="8">
             {/* AUTHOR INTRO STARTS */}
-            <Media className="mb-4 admin-intro">
+            <div className="mb-4 admin-intro media">
                 <Image
                     roundedCircle
                     width={64}
@@ -13,14 +13,14 @@ const AuthorIntro = () =>
                     src="https://avatars1.githubusercontent.com/u/9482724?s=460&u=69a6acab13fd5547a4e316e496b573271077147f&v=4"
                     alt="Generic placeholder"
                 />
-                <Media.Body>
+                <div className="media-body">
                     <h5 className="font-weight-bold mb-0">Hello Friends,</h5>
                     <p className="welcome-text">
                         My name is Filip Jerga and I am an experienced software engineer and freelance developer.
                         and this is my blog page.
                     </p>
-                </Media.Body>
-            </Media>
+                </div>
+            </div>
             {/* AUTHOR INTRO ENDS */}
         </Col>
     </Row>
